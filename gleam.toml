@@ -1,5 +1,5 @@
 name = "ursatoro"
-version = "1.0.0"
+version = "1.0.1"
 
 description = "Trading technical indicators library for Gleam. SMA, EMA, MACD, RSI, Stochastic, Bollinger Bands, ATR, VWAP, OBV."
 licences = ["BlueOak-1.0.0"]
