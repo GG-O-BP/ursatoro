@@ -5,6 +5,7 @@
 // Kalman filter: real-time streaming smoothing.
 // Savitzky-Golay: batch polynomial smoothing with noise removal.
 
+import gleam/int
 import gleam/list
 import gleam/result
 import ursatoro/util.{type IndicatorError}
@@ -107,18 +108,17 @@ fn sg_coefficients(half: Int, polyorder: Int) -> List(Float) {
   // Build Vandermonde-like system and solve for row 0 of pseudo-inverse.
   // For each position j in -half..half, coefficient = Σ_k gram_poly(j,k) * gram_poly(0,k) * (2k+1) / (2*half+1)
   let m = int_to_float(2 * half + 1)
-  list.range(-half, half)
-  |> list.map(fn(j) {
+  int.range(from: -half, to: half, with: [], run: fn(acc, j) {
     let jf = int_to_float(j)
     let hf = int_to_float(half)
-    compute_sg_coeff(jf, hf, polyorder, m)
+    [compute_sg_coeff(jf, hf, polyorder, m), ..acc]
   })
+  |> list.reverse
 }
 
 // Compute single SG coefficient using Gram polynomial expansion.
 fn compute_sg_coeff(j: Float, half: Float, order: Int, m: Float) -> Float {
-  list.range(0, order)
-  |> list.fold(0.0, fn(acc, k) {
+  int.range(from: 0, to: order, with: 0.0, run: fn(acc, k) {
     let gj = gram_poly(j, half, k)
     let g0 = gram_poly(0.0, half, k)
     let kf = int_to_float(k)
