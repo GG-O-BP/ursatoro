@@ -47,6 +47,34 @@ pub fn macd(
   trend.macd(candles, fast, slow, signal)
 }
 
+// ── ADX indicator [AMAB: §3 trend strength] ─────────────────────────
+// Returns List(AdxResult) with adx (0-100), plus_di, minus_di.
+// ADX > 25 = strong trend, ADX < 20 = no trend.
+
+pub type AdxResult =
+  trend.AdxResult
+
+pub fn adx(
+  candles: List(Candle),
+  period period: Int,
+) -> Result(List(trend.AdxResult), IndicatorError) {
+  trend.adx(candles, period)
+}
+
+// ── Donchian Channel [CCT: §3 breakout strategy] ────────────────────
+// Returns List(DonchianResult) with upper (highest high), lower (lowest low), mid.
+// Used in ensemble with multiple lookback periods for breakout detection.
+
+pub type DonchianResult =
+  trend.DonchianResult
+
+pub fn donchian_channel(
+  candles: List(Candle),
+  period period: Int,
+) -> Result(List(trend.DonchianResult), IndicatorError) {
+  trend.donchian_channel(candles, period)
+}
+
 // ── Momentum indicators ─────────────────────────────────────────────
 
 pub fn rsi(
