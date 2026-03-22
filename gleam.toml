@@ -1,0 +1,15 @@
+name = "ursatoro"
+version = "1.0.0"
+
+description = "Trading technical indicators library for Gleam. SMA, EMA, MACD, RSI, Stochastic, Bollinger Bands, ATR, VWAP, OBV."
+licences = ["BlueOak-1.0.0"]
+repository = { type = "github", user = "ggobp", repo = "ursatoro" }
+
+[dependencies]
+gleam_stdlib = ">= 0.44.0 and < 2.0.0"
+bigdecimal = ">= 1.4.0 and < 2.0.0"
+gleam_deque = ">= 1.0.0 and < 2.0.0"
+gleam_community_maths = ">= 2.0.1 and < 3.0.0"
+
+[dev_dependencies]
+gleeunit = ">= 1.0.0 and < 2.0.0"
