@@ -120,7 +120,6 @@ pub fn amihud(
   use _ <- result.try(util.validate_length(prices, min_len))
   use _ <- result.try(util.validate_length(volumes, min_len))
 
-  // Compute returns and align with volumes (skip first)
   let returns = compute_returns(prices)
   let vols = case list.rest(volumes) {
     Ok(v) -> v

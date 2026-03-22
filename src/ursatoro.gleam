@@ -91,6 +91,31 @@ pub fn obv(candles: List(Candle)) -> Result(List(Float), IndicatorError) {
   volume.obv(candles)
 }
 
+// ── Momentum factor ───────────────────────────────────────────────
+// [Paper: QA - Quantitative Alpha in Crypto]
+
+pub fn momentum_factor(
+  candles: List(Candle),
+  window window: Int,
+) -> Result(List(Float), IndicatorError) {
+  momentum.momentum_factor(candles, window:)
+}
+
+// ── HAR Volatility ────────────────────────────────────────────────
+// [Paper: QA - Quantitative Alpha in Crypto]
+
+pub type HarResult =
+  volatility.HarResult
+
+pub fn har_volatility(
+  candles: List(Candle),
+  daily daily: Int,
+  weekly weekly: Int,
+  monthly monthly: Int,
+) -> Result(List(HarResult), IndicatorError) {
+  volatility.har_volatility(candles, daily:, weekly:, monthly:)
+}
+
 // ── Filter indicators (data preprocessing) ────────────────────────
 // [Paper: LOB - Crypto LOB Dynamics]
 
@@ -144,29 +169,4 @@ pub fn amihud(
   window window: Int,
 ) -> Result(List(Float), IndicatorError) {
   microstructure.amihud(prices, volumes, window:)
-}
-
-// ── Momentum factor ───────────────────────────────────────────────
-// [Paper: QA - Quantitative Alpha in Crypto]
-
-pub fn momentum_factor(
-  candles: List(Candle),
-  window window: Int,
-) -> Result(List(Float), IndicatorError) {
-  momentum.momentum_factor(candles, window:)
-}
-
-// ── HAR Volatility ────────────────────────────────────────────────
-// [Paper: QA - Quantitative Alpha in Crypto]
-
-pub type HarResult =
-  volatility.HarResult
-
-pub fn har_volatility(
-  candles: List(Candle),
-  daily daily: Int,
-  weekly weekly: Int,
-  monthly monthly: Int,
-) -> Result(List(HarResult), IndicatorError) {
-  volatility.har_volatility(candles, daily:, weekly:, monthly:)
 }
