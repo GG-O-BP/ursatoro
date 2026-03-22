@@ -122,12 +122,17 @@ pub fn bd_abs(value: BigDecimal) -> BigDecimal {
 /// Square root via Newton's method (Babylonian method).
 /// Returns zero for zero/negative inputs.
 pub fn bd_sqrt(value: BigDecimal) -> BigDecimal {
+  let working_scale = division_scale + 4
   case bigdecimal.signum(value) {
     s if s <= 0 -> bigdecimal.zero()
     _ -> {
+      let value =
+        bigdecimal.rescale(value, scale: working_scale, rounding: rounding.HalfUp)
       let two = int_to_bd(2)
       // Initial guess: value / 2
-      let initial = bigdecimal.divide(value, by: two, rounding: rounding.HalfUp)
+      let initial =
+        bigdecimal.divide(value, by: two, rounding: rounding.HalfUp)
+        |> bigdecimal.rescale(scale: working_scale, rounding: rounding.HalfUp)
       newton_sqrt(value, initial, 0)
     }
   }
@@ -138,6 +143,7 @@ fn newton_sqrt(
   guess: BigDecimal,
   iterations: Int,
 ) -> BigDecimal {
+  let working_scale = division_scale + 4
   case iterations >= 50 {
     True ->
       bigdecimal.rescale(
@@ -150,10 +156,18 @@ fn newton_sqrt(
       // next = (guess + value / guess) / 2
       let divided =
         bigdecimal.divide(value, by: guess, rounding: rounding.HalfUp)
+        |> bigdecimal.rescale(
+          scale: working_scale,
+          rounding: rounding.HalfUp,
+        )
       let next =
         bigdecimal.divide(
           bigdecimal.add(guess, divided),
           by: two,
+          rounding: rounding.HalfUp,
+        )
+        |> bigdecimal.rescale(
+          scale: working_scale,
           rounding: rounding.HalfUp,
         )
       // Check convergence: if |next - guess| is very small, stop
@@ -190,10 +204,16 @@ pub fn bd_stddev_population(
 ) -> Result(BigDecimal, IndicatorError) {
   use mean <- result.try(bd_mean(values))
   let n = int_to_bd(list.length(values))
+  let working_scale = division_scale + 4
   let sum_sq =
     list.fold(values, bigdecimal.zero(), fn(acc, v) {
       let diff = bigdecimal.subtract(v, mean)
-      let sq = bigdecimal.multiply(diff, diff)
+      let sq =
+        bigdecimal.multiply(diff, diff)
+        |> bigdecimal.rescale(
+          scale: working_scale,
+          rounding: rounding.HalfUp,
+        )
       bigdecimal.add(acc, sq)
     })
   use variance <- result.try(safe_divide(sum_sq, n))
