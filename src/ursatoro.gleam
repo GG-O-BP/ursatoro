@@ -143,6 +143,14 @@ pub fn kalman_smooth(
   filter.kalman_smooth(prices, q, r)
 }
 
+pub fn savitzky_golay(
+  prices: List(Float),
+  window_length window_length: Int,
+  polyorder polyorder: Int,
+) -> Result(List(Float), IndicatorError) {
+  filter.savitzky_golay(prices, window_length:, polyorder:)
+}
+
 // ── Microstructure indicators ─────────────────────────────────────
 // [Paper: MICRO - Microstructure & Market Dynamics]
 
